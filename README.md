@@ -67,3 +67,6 @@ SEMICOLON
 ]
 ```
 Note that whitespaces are insignificant here.
+
+## Basic REPL:
+`REPL` stands for "Read Eval Print Loop", a lot of interpreter based languages have REPL, and it is primarily used to use the language in shell/console. REPL will constantly keep on evolving in this project through multiple commits. We have Lexer ready, so the REPL supports that, support for EVAL will come later.

@@ -1,8 +1,6 @@
 package lexer
 
 import (
-	"fmt"
-
 	"github.com/Srajan1/monkey-interpreter/token"
 )
 
@@ -81,12 +79,10 @@ func (l *Lexer) NextToken() token.Token {
 	switch l.ch {
 	case '=':
 		if l.peekChar() == '=' {
-			fmt.Printf("In ==, %s\n", string(l.ch))
 			ch := l.ch
 			l.readChar()
 			return token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
 		} else {
-			fmt.Printf("In =, %s\n", string(l.ch))
 			tok = newToken(token.ASSIGN, l.ch)
 		}
 	case '+':
@@ -95,12 +91,10 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.MINUS, l.ch)
 	case '!':
 		if l.peekChar() == '=' {
-			fmt.Printf("In !=, %s\n", string(l.ch))
 			ch := l.ch
 			l.readChar()
 			return token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
 		} else {
-			fmt.Printf("In !, %s\n", string(l.ch))
 			tok = newToken(token.BANG, l.ch)
 		}
 	case '/':
