@@ -1,6 +1,8 @@
 package lexer
 
 import (
+	"fmt"
+
 	"github.com/Srajan1/monkey-interpreter/token"
 )
 
@@ -25,6 +27,16 @@ func (l *Lexer) readChar() {
 
 	l.position = l.readPosition
 	l.readPosition++
+}
+
+// peekChar() is really similar to readChar(), except that it doesn’t increment l.position and
+// l.readPosition. We only want to “peek” ahead in the input and not move around in it, so we know what a call to readChar() would return.
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.readPosition]
+	}
 }
 
 // readIdentifier() does exactly what its name suggests: it reads in an identifier and advances
@@ -68,13 +80,29 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		if l.peekChar() == '=' {
+			fmt.Printf("In ==, %s\n", string(l.ch))
+			ch := l.ch
+			l.readChar()
+			return token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			fmt.Printf("In =, %s\n", string(l.ch))
+			tok = newToken(token.ASSIGN, l.ch)
+		}
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
 		tok = newToken(token.MINUS, l.ch)
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		if l.peekChar() == '=' {
+			fmt.Printf("In !=, %s\n", string(l.ch))
+			ch := l.ch
+			l.readChar()
+			return token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			fmt.Printf("In !, %s\n", string(l.ch))
+			tok = newToken(token.BANG, l.ch)
+		}
 	case '/':
 		tok = newToken(token.SLASH, l.ch)
 	case '*':
